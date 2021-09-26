@@ -63,7 +63,7 @@ jobs:
           command: make build
 
       - persist_to_workspace:
-          root: "./"
+          root: "./bin"
           paths:
             - bootstrap
 
