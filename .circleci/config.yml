@@ -46,8 +46,7 @@ jobs:
       - run:
           name: Move code from attached workspace
           command: |
-            mkdir -p bin
-            mv /tmp/build/* ./bin/
+            mv /tmp/build/* ./
 
       - run: ls
 
