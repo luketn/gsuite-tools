@@ -1,0 +1,17 @@
+{
+  "name": "gsuite-tools",
+  "version": "1.0.0",
+  "description": "API Gateway + Lambda based service for g-suite admin.",
+  "main": "index.js",
+  "devDependencies": {
+    "serverless": "^2.60.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luketn/gsuite-tools.git"
+  },
+  "author": "Luke Thompson"
+}
