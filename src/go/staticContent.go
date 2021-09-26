@@ -1,14 +1,23 @@
 package main
 
-import "os"
+import (
+	"os"
+	"path/filepath"
+	"strings"
 
-var ContentCache map[string]string
+	"github.com/pkg/errors"
+)
+
+var contentCache map[string]string
 
 func GetStaticContent(name string) (string, error) {
-	result, cached := ContentCache[name]
+	result, cached := contentCache[name]
 	var err error = nil
 	if cached {
-		f, error := os.Open("html/index.html")
+		if strings.Contains(name, "..") {
+			return "", errors.New("Path contains ..")
+		}
+		f, error := os.Open(filepath.Join("ui", name))
 	if error != nil {
 		err = error
 	} else {
@@ -19,8 +28,8 @@ func GetStaticContent(name string) (string, error) {
 			size := info.Size()
 			var fileContent []byte = make([]byte, size)
 			f.Read(fileContent)
-				result = string(fileContent);
-				ContentCache[name] = result
+				result = string(fileContent)
+				contentCache[name] = result
 		}
 		f.Close()
 			}
