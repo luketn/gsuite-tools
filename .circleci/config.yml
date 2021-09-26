@@ -26,8 +26,8 @@ jobs:
           working_directory: ~/project/src/ui
           command: npm run build
       - run:
-          working_directory: ~/project/src/ui/dist
-          command: zip ../ui.zip *
+          working_directory: ~/project/src/ui
+          command: zip -r ui.zip ./dist/*
       - store_artifacts:
           path: "~/project/src/ui/ui.zip"
           destination: ui.zip
