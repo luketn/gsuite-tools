@@ -52,6 +52,7 @@ provider:
 package:
   patterns:
     - '!./**'
+    - index.html
     - ./bin/**
 
 functions:
