@@ -22,6 +22,20 @@ jobs:
       - run:
           working_directory: ~/project/src/ui
           command: npm run test
+      - run:
+          working_directory: ~/project/src/ui
+          command: npm run build
+      - run:
+          working_directory: ~/project/src/ui/dist
+          command: zip ../ui.zip *
+      - store_artifacts:
+          path: "~/project/src/ui/ui.zip"
+          destination: ui.zip
+      - persist_to_workspace:
+          working_directory: ~/project/src/ui
+          root: "./"
+          paths:
+            - dist
   build-app:
     working_directory: ~/repo
     docker:
