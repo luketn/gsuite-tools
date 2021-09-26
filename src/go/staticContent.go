@@ -7,14 +7,37 @@ import (
 	"strings"
 )
 
+func GetContentType(fileName string) (string, error) {
+	switch fileName[strings.LastIndex(fileName, "."):] {
+	case ".txt":
+		return "text/plain", nil
+	case ".html":
+		return "text/html", nil
+	case ".css":
+		return "text/css", nil
+	case ".js":
+		return "application/javascript", nil
+	case ".png":
+		return "image/png", nil
+	case ".ico":
+		return "image/vnd.microsoft.icon", nil
+	default:
+		return "", errors.New("Unknown type for " + fileName)
+	}
+}
+
 var contentCache = map[string]string{}
 
-func GetStaticContent(rootPath string, name string) (string, error) {
+// Returns the static content in the file with name 'name' in directory 'rootPath'. Returns the content, the content type and the error (or nil)
+func GetStaticContent(rootPath string, name string) (string, string, error) {
+	contentType, err := GetContentType(name)
+	if err != nil {
+		return "", "", err
+	}
 	result, cached := contentCache[name]
-	var err error = nil
 	if !cached {
 		if strings.Contains(name, "..") {
-			return "", errors.New("Path contains ..")
+			return "", "", errors.New("Path contains ..")
 		}
 		filepath := filepath.Join(rootPath, name)
 		f, error := os.Open(filepath)
@@ -35,8 +58,8 @@ func GetStaticContent(rootPath string, name string) (string, error) {
 		}
 	}
 	if err != nil {
-		return "", err
+		return "", "", err
 	} else {
-		return result, nil
+		return result, contentType, nil
 	}
 }
