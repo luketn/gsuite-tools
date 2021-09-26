@@ -1,3 +1,5 @@
 /secret.json
 /bin/
 /.serverless/
+/bootstrap
+/bootstrap.zip

@@ -22,12 +22,11 @@ frameworkVersion: '2'
 
 provider:
   name: aws
-  runtime: go1.x
+  runtime: provided.al2
   lambdaHashingVersion: 20201221
-
-# you can overwrite defaults here
-#  stage: dev
   region: ap-southeast-2
+  memorySize: 1024
+  timeout: 1
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -50,10 +49,7 @@ provider:
 #    variable1: value1
 
 package:
-  patterns:
-    - '!./**'
-    - index.html
-    - ./bin/**
+  artifact: bootstrap.zip
 
 functions:
   world:

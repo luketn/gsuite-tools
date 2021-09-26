@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
@@ -42,14 +41,14 @@ func main() {
 	f, error := os.Open("index.html")
 	if error != nil {
 		err = error
-	}else {
+	} else {
 		info, error := f.Stat()
 		if error != nil {
 			err = error
-		}else {
+		} else {
 			size := info.Size()
 			index = make([]byte, size)
-			f.Read(index);
+			f.Read(index)
 		}
 	}
 	lambda.Start(Handler)

@@ -6,7 +6,7 @@ build: gomodgen
 	zip bootstrap.zip bootstrap index.html
 
 clean:
-	rm -rf bootstrap bootstrap.zip ./bin ./vendor go.sum
+	rm -rf bootstrap bootstrap.zip ./bin ./vendor
 
 deploy: clean build
 	sls deploy --verbose
