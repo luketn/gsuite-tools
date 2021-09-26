@@ -24,7 +24,7 @@ jobs:
           command: npm run test-ui
       - run:
           working_directory: ~/project/src/ui
-          command: npm run build
+          command: npm run build-prod
       - run:
           working_directory: ~/project/src/ui
           command: zip -r ui.zip ./dist/*
