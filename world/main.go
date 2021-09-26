@@ -27,7 +27,7 @@ func Handler(ctx context.Context, evt events.APIGatewayProxyRequest) (Response, 
 	var buf bytes.Buffer
 
 	body, err := json.Marshal(map[string]interface{}{
-		"message": "Okay so your other function also executed successfully!", "RequestedPath": evt.Path,
+		"ctx": ctx, "evt": evt,
 	})
 	if err != nil {
 		return Response{StatusCode: 404}, err
