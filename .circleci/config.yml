@@ -32,8 +32,7 @@ jobs:
           path: "~/project/src/ui/ui.zip"
           destination: ui.zip
       - persist_to_workspace:
-          working_directory: ~/project/src/ui
-          root: "./"
+          root: "~/project/src/ui"
           paths:
             - dist
   build-app:
