@@ -30,32 +30,32 @@ var contentCache = map[string]string{}
 
 // Returns the static content in the file with name 'name' in directory 'rootPath'. Returns the content, the content type and the error (or nil)
 func GetStaticContent(rootPath string, name string) (string, string, error) {
+	cached := false
+	result := ""
 	contentType, err := GetContentType(name)
-	if err != nil {
-		return "", "", err
-	}
-	result, cached := contentCache[name]
-	if !cached {
-		if strings.Contains(name, "..") {
-			return "", "", errors.New("Path contains ..")
-		}
-		filepath := filepath.Join(rootPath, name)
-		f, err := os.Open(filepath)
-		if err == nil {
-			info, err := f.Stat()
-			if err == nil {
-				size := info.Size()
-				var fileContent []byte = make([]byte, size)
-				f.Read(fileContent)
-				result = string(fileContent)
-				contentCache[name] = result
+	if err == nil {
+		result, cached = contentCache[name]
+		if !cached {
+			if strings.Contains(name, "..") {
+				err = errors.New("Path contains ..")
+			} else {
+				path := filepath.Join(rootPath, name)
+				f, err := os.Open(path)
+				if err == nil {
+					info, err := f.Stat()
+					if err == nil {
+						size := info.Size()
+						var fileContent = make([]byte, size)
+						readBytes, err := f.Read(fileContent)
+						if err == nil && int64(readBytes) == size {
+							result = string(fileContent)
+							contentCache[name] = result
+						}
+					}
+					err = f.Close()
+				}
 			}
-			f.Close()
 		}
 	}
-	if err != nil {
-		return "", "", err
-	} else {
-		return result, contentType, nil
-	}
+	return result, contentType, err
 }
