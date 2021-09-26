@@ -27,5 +27,9 @@ jobs:
       - run:
           name: Make
           command: make build
-      - store_artefacts:
+      - store_artefact:
           path: bin/world
+      - persist_to_workspace:
+          root: ~/stars
+          paths:
+            - '*'
