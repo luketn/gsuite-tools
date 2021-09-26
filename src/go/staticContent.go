@@ -40,14 +40,10 @@ func GetStaticContent(rootPath string, name string) (string, string, error) {
 			return "", "", errors.New("Path contains ..")
 		}
 		filepath := filepath.Join(rootPath, name)
-		f, error := os.Open(filepath)
-		if error != nil {
-			err = error
-		} else {
-			info, error := f.Stat()
-			if error != nil {
-				err = error
-			} else {
+		f, err := os.Open(filepath)
+		if err == nil {
+			info, err := f.Stat()
+			if err == nil {
 				size := info.Size()
 				var fileContent []byte = make([]byte, size)
 				f.Read(fileContent)
