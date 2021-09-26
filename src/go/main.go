@@ -2,14 +2,12 @@ package main
 
 import (
 	"context"
+	"errors"
+	"strings"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
-
-import "os"
-
-var index []byte = nil
-var err error = nil
 
 // Response is of type APIGatewayProxyResponse since we're leveraging the
 // AWS Lambda Proxy Request functionality (default behavior)
@@ -19,37 +17,27 @@ type Response events.APIGatewayProxyResponse
 
 // Handler is our lambda handler invoked by the `lambda.Start` function call
 func Handler(ctx context.Context, evt events.APIGatewayV2HTTPRequest) (Response, error) {
-	if err != nil {
-		return Response{StatusCode: 404}, err
+	if strings.HasPrefix(evt.RawPath, "/api") {
+		switch evt.RawPath {
+		default:
+			return Response{StatusCode: 404}, errors.New("Api not defined: " + evt.RawPath)
+		}
+	} else {
+		content, contentType, err := GetStaticContent("ui", evt.RawPath)
+		if err != nil {
+			return Response{StatusCode: 404}, err
+		} else {
+				return Response{
+					StatusCode: 200,
+					Headers: map[string]string{
+						"content-type": contentType,
+					},
+					Body: content,
+				}, nil
+			}
 	}
-
-	resp := Response{
-		StatusCode:      200,
-		IsBase64Encoded: false,
-		Body:            string(index),
-		Headers: map[string]string{
-			"Content-Type":           "text/html",
-			"X-MyCompany-Func-Reply": "world-handler",
-			"requestedPath":          evt.RawPath,
-		},
-	}
-
-	return resp, nil
 }
 
 func main() {
-	f, error := os.Open("index.html")
-	if error != nil {
-		err = error
-	} else {
-		info, error := f.Stat()
-		if error != nil {
-			err = error
-		} else {
-			size := info.Size()
-			index = make([]byte, size)
-			f.Read(index)
-		}
-	}
 	lambda.Start(Handler)
 }
