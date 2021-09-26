@@ -30,6 +30,6 @@ jobs:
       - store_artefact:
           path: bin/world
       - persist_to_workspace:
-          root: ~/stars
+          root: bin/
           paths:
-            - '*'
+            - 'world'
