@@ -18,7 +18,7 @@ var err error = nil
 type Response events.APIGatewayProxyResponse
 
 // Handler is our lambda handler invoked by the `lambda.Start` function call
-func Handler(ctx context.Context, evt events.APIGatewayProxyRequest) (Response, error) {
+func Handler(ctx context.Context, evt events.APIGatewayV2HTTPRequest) (Response, error) {
 	if err != nil {
 		return Response{StatusCode: 404}, err
 	}
@@ -30,7 +30,7 @@ func Handler(ctx context.Context, evt events.APIGatewayProxyRequest) (Response, 
 		Headers: map[string]string{
 			"Content-Type":           "text/html",
 			"X-MyCompany-Func-Reply": "world-handler",
-			"requestedPath": evt.Path,
+			"requestedPath":          evt.RawPath,
 		},
 	}
 
