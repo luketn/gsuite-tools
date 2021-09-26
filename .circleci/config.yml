@@ -27,9 +27,53 @@ jobs:
       - run:
           name: Make
           command: make build
-      - store_artefact:
+      - store_artifacts:
           path: bin/world
+          destination: world
       - persist_to_workspace:
           root: bin/
           paths:
             - 'world'
+
+  deploy:
+    docker:
+      - image: circleci/node:7.10
+    steps:
+      - attach_workspace:
+          at: /tmp/build
+
+      - run:
+          name: Move code from attached workspace
+          command: |
+            mkdir -p bin
+            mv /tmp/build/* ./bin/
+
+      - run: ls
+
+      - restore_cache:
+          keys:
+            - serverless-dependency
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: serverless-dependency
+
+      - run:
+          name: Deploy API to AWS
+          command: |
+            ./node_modules/.bin/sls deploy
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
