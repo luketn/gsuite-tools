@@ -3,7 +3,7 @@
 build: gomodgen
 	export GO111MODULE=on
 	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bootstrap world/main.go
-	zip bootstrap.zip bootstrap
+	zip bootstrap.zip bootstrap index.html
 
 clean:
 	rm -rf bootstrap bootstrap.zip ./bin ./vendor go.sum
