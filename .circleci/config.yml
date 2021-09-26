@@ -61,26 +61,33 @@ jobs:
       - run:
           name: Make
           command: make build
-      - store_artifacts:
-          path: "./bootstrap"
-          destination: bootstrap.zip
+
       - persist_to_workspace:
           root: "./"
           paths:
-            - bootstrap.zip
+            - bootstrap
 
   deploy:
     docker:
       - image: cimg/node:16.10.0
     steps:
       - checkout
+
       - attach_workspace:
           at: /tmp/build
 
       - run:
-          name: Move code from attached workspace
+          name: Move code from attached workspace + Zip
           command: |
-            mv /tmp/build/* ./
+            mkdir -p bin
+            mv /tmp/build/bootstrap ./bin/bootstrap
+            mv /tmp/build/dist/gsuite-tools ./bin/ui
+            cd bin
+            zip -r ../bootstrap.zip *
+
+      - store_artifacts:
+          path: "./bootstrap.zip"
+          destination: bootstrap.zip
 
       - run: ls
 
