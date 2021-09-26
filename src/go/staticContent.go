@@ -1,23 +1,23 @@
 package main
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
-var contentCache map[string]string
+var contentCache = map[string]string{}
 
-func GetStaticContent(name string) (string, error) {
+func GetStaticContent(rootPath string, name string) (string, error) {
 	result, cached := contentCache[name]
 	var err error = nil
 	if !cached {
 		if strings.Contains(name, "..") {
 			return "", errors.New("Path contains ..")
 		}
-		f, error := os.Open(filepath.Join("ui", name))
+		filepath := filepath.Join(rootPath, name)
+		f, error := os.Open(filepath)
 		if error != nil {
 			err = error
 		} else {

@@ -42,7 +42,7 @@ func Handler(ctx context.Context, evt events.APIGatewayV2HTTPRequest) (Response,
 			return Response{StatusCode: 404}, errors.New("Api not defined: " + evt.RawPath)
 		}
 	} else {
-		content, err := GetStaticContent(evt.RawPath)
+		content, err := GetStaticContent("ui", evt.RawPath)
 		if err != nil {
 			return Response{StatusCode: 404}, err
 		} else {
