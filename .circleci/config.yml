@@ -28,12 +28,12 @@ jobs:
           name: Make
           command: make build
       - store_artifacts:
-          path: bin/world
-          destination: world
+          path: "./bootstrap"
+          destination: bootstrap
       - persist_to_workspace:
-          root: bin/
+          root: "./"
           paths:
-            - 'world'
+            - bootstrap
 
   deploy:
     docker:
