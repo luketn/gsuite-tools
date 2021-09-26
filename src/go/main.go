@@ -6,8 +6,6 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-import "os"
-
 var index []byte = nil
 var err error = nil
 
@@ -38,18 +36,5 @@ func Handler(ctx context.Context, evt events.APIGatewayV2HTTPRequest) (Response,
 }
 
 func main() {
-	f, error := os.Open("index.html")
-	if error != nil {
-		err = error
-	} else {
-		info, error := f.Stat()
-		if error != nil {
-			err = error
-		} else {
-			size := info.Size()
-			index = make([]byte, size)
-			f.Read(index)
-		}
-	}
 	lambda.Start(Handler)
 }
