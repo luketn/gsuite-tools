@@ -29,11 +29,11 @@ jobs:
           command: make build
       - store_artifacts:
           path: "./bootstrap"
-          destination: bootstrap
+          destination: bootstrap.zip
       - persist_to_workspace:
           root: "./"
           paths:
-            - bootstrap
+            - bootstrap.zip
 
   deploy:
     docker:
