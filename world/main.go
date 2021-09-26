@@ -9,6 +9,13 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
+/*import (
+    "bufio"
+    "fmt"
+    "io"
+    "os"
+)*/
+
 // Response is of type APIGatewayProxyResponse since we're leveraging the
 // AWS Lambda Proxy Request functionality (default behavior)
 //
@@ -16,11 +23,11 @@ import (
 type Response events.APIGatewayProxyResponse
 
 // Handler is our lambda handler invoked by the `lambda.Start` function call
-func Handler(ctx context.Context) (Response, error) {
+func Handler(ctx context.Context, evt events.APIGatewayProxyRequest) (Response, error) {
 	var buf bytes.Buffer
 
 	body, err := json.Marshal(map[string]interface{}{
-		"message": "Okay so your other function also executed successfully!",
+		"message": "Okay so your other function also executed successfully!", "RequestedPath": evt.Path,
 	})
 	if err != nil {
 		return Response{StatusCode: 404}, err
