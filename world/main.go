@@ -31,6 +31,7 @@ func Handler(ctx context.Context, evt events.APIGatewayProxyRequest) (Response, 
 		Headers: map[string]string{
 			"Content-Type":           "text/html",
 			"X-MyCompany-Func-Reply": "world-handler",
+			"requestedPath": evt.Path,
 		},
 	}
 
