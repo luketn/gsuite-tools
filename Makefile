@@ -21,4 +21,4 @@ gomodgen:
 
 #Called from in the bin directory
 zip:
-	zip ../bootstrap.zip $(wildcard *)
+	zip -r ../bootstrap.zip $(wildcard *)
