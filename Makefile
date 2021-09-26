@@ -9,6 +9,10 @@ build: gomodgen
 	cp -r src/resources/* bin/
 	"$(MAKE)" -C bin -f $(CURDIR)/Makefile zip
 
+build-ui:
+	cd src/ui
+	npm run build
+
 clean:
 	rm -rf bootstrap.zip ./bin ./vendor
 
