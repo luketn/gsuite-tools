@@ -8,7 +8,15 @@ import (
 )
 
 func GetContentType(fileName string) (string, error) {
-	switch fileName[strings.LastIndex(fileName, "."):] {
+	index := strings.LastIndex(fileName, ".")
+	if index == -1 {
+		if fileName == "/" {
+			return "text/html", nil
+		} else {
+			return "", errors.New("Path has no extension! Invalid request.")
+		}
+	}
+	switch fileName[index:] {
 	case ".txt":
 		return "text/plain", nil
 	case ".html":
