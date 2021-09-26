@@ -36,10 +36,15 @@ func GetContentType(fileName string) (string, error) {
 
 var contentCache = map[string]string{}
 
-// Returns the static content in the file with name 'name' in directory 'rootPath'. Returns the content, the content type and the error (or nil)
+// GetStaticContent Returns the static content in the file with name 'name' in directory 'rootPath'. Returns the content, the content type and the error (or nil)
 func GetStaticContent(rootPath string, name string) (string, string, error) {
 	cached := false
 	result := ""
+
+	if name == "/" {
+		name = "/index.html"
+	}
+
 	contentType, err := GetContentType(name)
 	if err == nil {
 		result, cached = contentCache[name]
