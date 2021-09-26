@@ -1,9 +1,7 @@
 package main
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -22,18 +20,14 @@ type Response events.APIGatewayProxyResponse
 
 // Handler is our lambda handler invoked by the `lambda.Start` function call
 func Handler(ctx context.Context, evt events.APIGatewayProxyRequest) (Response, error) {
-	var buf bytes.Buffer
-
-	body := index;
 	if err != nil {
 		return Response{StatusCode: 404}, err
 	}
-	json.HTMLEscape(&buf, body)
 
 	resp := Response{
 		StatusCode:      200,
 		IsBase64Encoded: false,
-		Body:            buf.String(),
+		Body:            string(index),
 		Headers: map[string]string{
 			"Content-Type":           "text/html",
 			"X-MyCompany-Func-Reply": "world-handler",
