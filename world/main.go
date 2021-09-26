@@ -9,12 +9,10 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-/*import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-)*/
+import "os"
+
+var index []byte = nil
+var err error = nil
 
 // Response is of type APIGatewayProxyResponse since we're leveraging the
 // AWS Lambda Proxy Request functionality (default behavior)
@@ -26,9 +24,7 @@ type Response events.APIGatewayProxyResponse
 func Handler(ctx context.Context, evt events.APIGatewayProxyRequest) (Response, error) {
 	var buf bytes.Buffer
 
-	body, err := json.Marshal(map[string]interface{}{
-		"ctx": ctx, "evt": evt,
-	})
+	body := index;
 	if err != nil {
 		return Response{StatusCode: 404}, err
 	}
@@ -39,7 +35,7 @@ func Handler(ctx context.Context, evt events.APIGatewayProxyRequest) (Response, 
 		IsBase64Encoded: false,
 		Body:            buf.String(),
 		Headers: map[string]string{
-			"Content-Type":           "application/json",
+			"Content-Type":           "text/html",
 			"X-MyCompany-Func-Reply": "world-handler",
 		},
 	}
@@ -48,5 +44,18 @@ func Handler(ctx context.Context, evt events.APIGatewayProxyRequest) (Response, 
 }
 
 func main() {
+	f, error := os.Open("index.html")
+	if error != nil {
+		err = error
+	}else {
+		info, error := f.Stat()
+		if error != nil {
+			err = error
+		}else {
+			size := info.Size()
+			index = make([]byte, size)
+			f.Read(index);
+		}
+	}
 	lambda.Start(Handler)
 }
