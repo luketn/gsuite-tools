@@ -3,23 +3,62 @@
     <title>Gsuite Tools</title>
 </head>
 <body>
-    <nav>
-        <table>
-            <tr>
-                <td>
-        <a href="#maincontent">Skip Navigation</a>
-        </td>
-        <td>
-            <a href="/gsuite-tools/login">Log in</a>
-        </td>
+<nav>
+    <table>
+        <tr>
+            <td>
+                <a href="#maincontent">Skip Navigation</a>
+            </td>
+            <td>
+                <a href="/gsuite-tools/login">Log in</a>
+            </td>
         </tr>
-        </table>
-    </nav>
-    <main id="maincontent">
+    </table>
+</nav>
+<main id="maincontent">
     <center>
         <h1>Welcome to Gsuit Tools</h1>
         <p>Gsuite Tools</p>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <script>
+            function handleCredentialResponse(response) {
+                console.log("Encoded JWT ID token: " + response.credential);
+
+                $.ajax({
+                    url: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
+                    type: 'GET',
+                    dataType: 'json',
+                    headers: {
+                        'Authorization': response.credential
+                    },
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                        console.log(result);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+            window.onload = function () {
+                google.accounts.id.initialize({
+                    client_id: "933310976376-eq1qblesaahbncgosunfsg2esc4hi3mq.apps.googleusercontent.com",
+                    callback: handleCredentialResponse
+                });
+                google.accounts.id.renderButton(
+                    document.getElementById("buttonDiv"),
+                    { theme: "outline", size: "large" }  // customization attributes
+                );
+                google.accounts.id.prompt(); // also display the One Tap dialog
+            }
+        </script>
+        <div id="buttonDiv"></div>
+        </div>
     </center>
-    </main>
+</main>
+
+
 </body>
 </html>
