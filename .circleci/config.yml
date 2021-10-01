@@ -29,10 +29,14 @@ jobs:
           name: Make
           command: make build
 
+      - store_artifacts:
+          path: "./bootstrap.zip"
+          destination: bootstrap.zip
+
       - persist_to_workspace:
-          root: "./bin"
+          root: "."
           paths:
-            - bootstrap
+            - bootstrap.zip
 
   deploy:
     docker:
@@ -45,16 +49,7 @@ jobs:
 
       - run:
           name: Move code from attached workspace + Zip
-          command: |
-            mkdir -p bin/ui
-            mv /tmp/build/bootstrap ./bin/bootstrap
-            cp -R src/resources/ui/* bin/ui/
-            cd bin
-            zip -r ../bootstrap.zip *
-
-      - store_artifacts:
-          path: "./bootstrap.zip"
-          destination: bootstrap.zip
+          command: mv /tmp/build/bootstrap.zip ./bootstrap.zip
 
       - run: ls
 
