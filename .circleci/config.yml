@@ -2,39 +2,6 @@
 version: 2.1
 
 jobs:
-  build-ui:
-    docker:
-      - image: circleci/node:16.9.1-stretch-browsers
-    steps:
-      - checkout
-      - restore_cache:
-          working_directory: ~/project/src/ui
-          keys:
-            - npm-v2-{{ checksum "package-lock.json" }}
-      - run:
-          working_directory: ~/project/src/ui
-          command: npm ci
-      - save_cache:
-          working_directory: ~/project/src/ui
-          paths:
-            - node_modules
-          key: npm-v2-{{ checksum "package-lock.json" }}
-      - run:
-          working_directory: ~/project/src/ui
-          command: npm run test-ui
-      - run:
-          working_directory: ~/project/src/ui
-          command: npm run build-prod
-      - run:
-          working_directory: ~/project/src/ui
-          command: zip -r ui.zip ./dist/*
-      - store_artifacts:
-          path: "~/project/src/ui/ui.zip"
-          destination: ui.zip
-      - persist_to_workspace:
-          root: "~/project/src/ui"
-          paths:
-            - dist
   build-app:
     working_directory: ~/repo
     docker:
@@ -62,10 +29,14 @@ jobs:
           name: Make
           command: make build
 
+      - store_artifacts:
+          path: "./bootstrap.zip"
+          destination: bootstrap.zip
+
       - persist_to_workspace:
-          root: "./bin"
+          root: "."
           paths:
-            - bootstrap
+            - bootstrap.zip
 
   deploy:
     docker:
@@ -78,16 +49,7 @@ jobs:
 
       - run:
           name: Move code from attached workspace + Zip
-          command: |
-            mkdir -p bin
-            mv /tmp/build/bootstrap ./bin/bootstrap
-            mv /tmp/build/dist/gsuite-tools ./bin/ui
-            cd bin
-            zip -r ../bootstrap.zip *
-
-      - store_artifacts:
-          path: "./bootstrap.zip"
-          destination: bootstrap.zip
+          command: mv /tmp/build/bootstrap.zip ./bootstrap.zip
 
       - run: ls
 
@@ -112,11 +74,9 @@ workflows:
   build-deploy:
     jobs:
       - build-app
-      - build-ui
       - deploy:
           requires:
             - build-app
-            - build-ui
           filters:
             branches:
               only: main

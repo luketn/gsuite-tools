@@ -3,3 +3,5 @@
 /.serverless/
 /bootstrap
 /bootstrap.zip
+/clientid.dat
+/clientsecret.dat
