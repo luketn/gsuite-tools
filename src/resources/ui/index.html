@@ -26,21 +26,18 @@
             function handleCredentialResponse(response) {
                 console.log("Encoded JWT ID token: " + response.credential);
 
-                $.ajax({
-                    url: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
-                    type: 'GET',
-                    dataType: 'json',
-                    headers: {
-                        'Authorization': response.credential
-                    },
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (result) {
-                        console.log(result);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
+                // $.ajax({
+                //     url: encodeURI('https://content.googleapis.com/calendar/v3/users/me/calendarList?key=AIzaSyBkMPBOrhxOIfBgH-NRIn_za09j65gXxWA'),
+                //     type: 'GET',
+                //     dataType: 'json',
+                //     contentType: 'application/json; charset=utf-8',
+                //     success: function (result) {
+                //         console.log(result);
+                //     },
+                //     error: function (error) {
+                //         console.log(error);
+                //     }
+                // });
             }
             window.onload = function () {
                 google.accounts.id.initialize({
@@ -49,7 +46,7 @@
                 });
                 google.accounts.id.renderButton(
                     document.getElementById("buttonDiv"),
-                    { theme: "outline", size: "large" }  // customization attributes
+                    { scope: 'profile email calendar', theme: "outline", size: "large" }  // customization attributes
                 );
                 google.accounts.id.prompt(); // also display the One Tap dialog
             }
