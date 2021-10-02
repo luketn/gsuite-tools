@@ -10,7 +10,6 @@ import (
 
 func TestHandler(t *testing.T) {
 	rootPath = "../resources/ui"
-	rootPathSet = true
 
 	ctx := context.Background()
 	inputJSON, err := ioutil.ReadFile("../testData/api-request.json")

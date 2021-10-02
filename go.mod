@@ -6,6 +6,7 @@ require github.com/aws/aws-lambda-go v1.26.0
 
 require (
 	cloud.google.com/go v0.94.1 // indirect
+	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.7.1 // indirect
 	github.com/dnephin/pflag v1.0.7 // indirect
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/fnproject/fdk-go v0.0.9 // indirect
@@ -17,6 +18,7 @@ require (
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
+	github.com/mayur-tolexo/mold v0.0.0-20190607093212-4b835481f607 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/tencentyun/scf-go-lib v0.0.0-20200624065115-ba679e2ec9c9 // indirect
 	go.opencensus.io v0.23.0 // indirect
