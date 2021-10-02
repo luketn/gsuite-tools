@@ -52,7 +52,7 @@ func Handler(ctx context.Context, evt events.APIGatewayV2HTTPRequest) (Response,
 				Items:       item,
 				Total:       600,
 			}
-			invoice, err := CreateInvoice(rootPath, data)
+			invoice, err := CreateInvoice("", data)
 			if err != nil {
 				println("Error generating pdf %s", err)
 				return Response{StatusCode: 404}, errors.New("Failed to generate the pdf")
